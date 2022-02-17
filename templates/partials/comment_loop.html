@@ -1,0 +1,17 @@
+{% load jalali_tags %}
+{% for comment in comment.replies.all %}
+    <div style="margin-right: 30px" class="comment-row bg-success">
+        <img src="{{ comment.user.profile.image.url }}">
+        <div class="left-col">
+            <h3> {{ comment.user.username}} </h3>
+            <span>{{ comment.created|to_jalali:'%Y/%m/%d'}}</span>
+            <span>در پاسخ به{{ comment.parent.username }}</span>
+            <p>
+                {{ comment.body }}
+            </p>
+        </div>
+    </div>
+         {% if comment.replies.all %}
+             {% include 'partials/comment_loop.html' %}
+         {% endif %}
+{% endfor %}

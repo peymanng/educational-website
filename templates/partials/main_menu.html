@@ -1,0 +1,25 @@
+        <!-- main manu -->
+        <div class="main-menu">
+            <div class="container">
+                <nav>
+                    <span class="responsive-sign"><i class="zmdi zmdi-menu"></i></span>
+                    <ul>
+                        {% for category in all_categories %}
+                            {% if category.parent == None %}
+                                <li><a href="{% url 'category_courses' category.slug %}"> {{ category.title}} </a>
+                                    {% if category.children.all %}
+                                        <ul>
+                                            {% for child in category.children.all %}
+                                                <li><a href="{% url 'category_courses' child.slug %}"> {{ child.title}} </a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </li>
+                            {% endif %} 
+                        {% endfor %}
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <!-- /main manu -->

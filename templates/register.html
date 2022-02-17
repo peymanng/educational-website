@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    register
+{% endblock %}
+
+{% block content %}
+        <main class="client-page">
+            <div class="container-content">
+
+                <header><h2> عضویت در سایت </h2></header>
+
+                <div class="form-layer">
+
+                    <form action="{% url 'signup' %}" method="post">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <span class="input-group-addon" id="username"><i class="zmdi zmdi-account"></i></span>
+                            <input type="text" name="username" class="form-control" placeholder="نام کاربری" aria-describedby="username">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="email-address"><i class="zmdi zmdi-email"></i></span>
+                            <input name="email" type="text" class="form-control" placeholder="ایمیل" aria-describedby="email-address">
+                        </div>
+
+                        <div class="input-group">
+                            <span class="input-group-addon" id="password"><i class="zmdi zmdi-lock"></i></span>
+                            <input name="password" type="password" class="form-control" placeholder="رمز عبور " aria-describedby="password">
+                        </div>
+
+                        <div class="link">
+                            <a href="{% url 'login' %}"> <i class="zmdi zmdi-account"></i> ورود به سایت </a>
+                        </div>
+                        <button type="submit" class="btn btn-primary"> عضویت در سایت </button>
+                    </form>
+                </div>
+
+            </div>
+        </main>
+{% endblock %}

@@ -1,0 +1,36 @@
+<div class="landing-layer">
+            <div class="container">
+                <nav>
+                    <div class="row">
+                        <div class="col-sm-6 col-xs-12">
+                            <ul>
+                                <li><a href="{% url 'home' %}"> خانه </a></li>
+                                <li><a href="{% url 'cart_detail' %}"> سبد خرید شما </a></li>
+                                {% if user.is_authenticated %}
+                                    <li><a href="{% url 'profile' %}"> پروفایل </a></li>
+                                {% endif %}
+{#                                <li><a href=""> درباره ما </a> </li>#}
+                                <li><a href="{% url 'contact-us' %}"> تماس با ما </a></li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="clientarea">
+
+                                {% if user.is_authenticated  %}
+                                    <div class="loggein ">
+                                         <i title="پروفایل" class="zmdi zmdi-account"></i><a href="{% url 'profile' %}"> {{ user.username }} </a>
+                                         <i style="margin-right: 10px" class="zmdi zmdi-square-right"></i><a href="{% url 'logout' %}">خروج</a>
+                                    </div>
+                                {% else %}
+                                    <div class="signin">
+                                        <i class="zmdi zmdi-account"></i>
+                                        <a href="{% url 'login'%}"> ورود </a> /
+                                        <a href="{% url 'signup' %}"> عضویت </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>

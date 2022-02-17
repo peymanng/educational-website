@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load jalali_tags %}
+
+{% block title %}
+    profile
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .course-img{
+            width:230px;
+        }
+        .teacher{
+                width: 50%;
+                align-items: center;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+        <main>
+            <div class="container">
+                <div class="user-account">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-4 col-xs-12">
+                            <aside>
+                                <div class="avatar-layer">
+                                    <div class="img-layer">
+                                        <a href="{% url 'update_profpic' %}" class="change-image"><i class="zmdi zmdi-edit"></i></a>
+                                        <img src="{% if user.profile.image.url %}{{ user.profile.image.url }}{% else %}{% static "images/pic/avatar.jpg" %}{% endif %}">
+                                    </div>
+                                    <div class="detail">
+                                        <span> {{ user.username }} </span>
+                                        <span> عضویت : {{ user.register_date|to_jalali:'%Y/%m/%d'}} </span>
+                                    </div>
+                                </div>
+
+                                <section>
+                                    <header><h3> میز کار </h3></header>
+                                    <div class="inner">
+                                        <ul>
+                                            <li><a href="{% url 'profile' %}"> مشاهده حساب کاربری </a></li>
+                                            <li><a href="{% url 'user_courses' %}"> مشاهده دوره های خریداری شده </a></li>
+                                            <li><a href="{% url 'update_user' %}"> ویرایش حساب کاربری </a></li>
+                                            <li><a href="{% url 'update_pass' %}"> تغییر رمز عبور </a></li>
+                                            <li><a href="{% url 'logout' %}"> خروج از حساب کاربری </a></li>
+                                        </ul>
+                                    </div>
+                                </section>
+                            </aside>
+                        </div>
+                        <div class="col-md-9 col-sm-8 col-xs-12">
+                            {% if not courses %}
+                                <h2 class="h2 text-center text-danger">شما هیچ  دوره ای نخریده اید.</h2>
+                            {% else %}
+                                <div>
+                                    <h2 class="h2 text-info">دوره های شما</h2>
+                                {% for course in courses %}
+                                        <div class="alert alert-info">
+                                            <div style="display: flex;align-items: center;">
+                                                <img class="course-img" style="margin-left: 30px;border-radius: 10px;" src="{{ course.image.url }}" alt="image">
+                                                <div class="teacher" style="display: flex;justify-content: space-between;">
+                                                    <a style="font-weight: bold" href="{% url 'course_detail' course.slug %}">{{ course.title }}</a>
+                                                    <span>مدرس: {{ course.teacher.username }} </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+{% endblock %}

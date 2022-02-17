@@ -1,0 +1,212 @@
+{% extends 'base.html' %}
+{% load jalali_tags %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+{{ course.title }}
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .captcha input{
+            margin-top: 5px;
+        }
+        .video-container{
+                border-radius: 10px;
+                padding: 10px;
+        }
+        hr{
+            margin: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+        <div class="container">
+            <section class="term-content">
+                <header><h1> {{ course.title }}</h1></header>
+                <div class="row">
+
+                    <div class="col-md-8 col-sm-12 col-xs-12 pull-left">
+                        <section style="border-radius: 25px" class="term-description">
+                            <img style="border-radius: 25px;" alt="photo" src="{{ course.image.url}}">
+                            {{ course.description|safe }}
+                        </section>
+                        <section style="border-radius: 25px" class="term-description">
+                            <div class="bg-info video-container">
+                        {% for video in course.video.all %}
+                                    <div class=" bg-info" style="padding: 20px;border-radius: 25px;">
+                                                <div  style="display: flex;justify-content: space-between;align-items: center;border-radius: 25px;" >
+                                                        <span>{{ video.position }}</span>
+                                                        {% if request.user in course.student.all or course.price == 0 %}
+                                                            <div>
+                                                                <span style="margin-left: 5px;">{{ video.title }}</span>
+                                                                <a download class="btn btn-primary" href="{{ video.video.url }}"><i class="zmdi zmdi-download"></i></a>
+                                                            </div>
+                                                        {% else %}
+                                                            <div>
+                                                                <span style="margin-left: 5px;">{{ video.title }}</span>
+                                                            </div>
+                                                        {% endif %}
+                                                </div>
+                                    </div>
+                                <hr class="bg-primary">
+                        {% endfor %}
+                            </div>
+                        </section>
+
+                        <section style="overflow: hidden;border-radius: 25px" class="user-comments">
+                            <header><h3> نظرات کاربران </h3></header>
+                            <div class="inner">
+                        {% if user.is_authenticated%}
+                                <form action="{% url 'course_detail' course.slug %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class=" col-md-12 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <textarea name="body" class="form-control" placeholder="متن نظر"></textarea>
+                                            </div>
+{#                                            <div class="row">#}
+{#                                                <div class="col-md-8 col-sm-7 col-xs-7">#}
+{#                                                    <div class="form-group">#}
+{#                                                        <input type="text" class="form-control" placeholder="کد امنیتی">#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                                <div class="col-md-4 col-sm-5 col-xs-5">#}
+{#                                                    <img src="images/captcha.jpg">#}
+{#                                                </div>#}
+{#                                            </div>#}
+                                            <div style="margin-bottom: 20px" class="captcha">
+                                                {{ form|crispy }}
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <button type="submit" class="btn btn-primary"> ثبت دیدگاه </button>
+                                        </div>
+                                    </div>
+                                </form>
+                        {% else %}
+                            <div class="alert alert-info">
+                                <h2 class="h4">برای گذاشتن کامنت وارد شوید.</h2>
+                            </div>
+                        {% endif %}
+                            <div class="comment-list">
+                                    {% for comment in comments %}
+                                        {% if comment.parent == None%}
+                                                <!-- row -->
+                                                <div class="comment-row">
+                                                    <img src="{{ comment.user.profile.image.url }}">
+                                                    <div class="left-col">
+                                                        <h3> {{ comment.user.username}} </h3>
+                                                        <span>{{ comment.created|to_jalali:'%Y/%m/%d'}}</span>
+                                                        <p>
+                                                            {{ comment.body }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                        {% for comment in comment.replies.all %}
+                                                            <div style="margin-right: 30px" class="comment-row bg-success">
+                                                                <img src="{{ comment.user.profile.image.url }}">
+                                                                <div class="left-col">
+                                                                    <h3> {{ comment.user.username}} </h3>
+                                                                    <span>{{ comment.created|to_jalali:'%Y/%m/%d'}}</span>
+                                                                    <span>  در پاسخ به{{ comment.parent.user.username }} </span>
+                                                                    <p>
+                                                                        {{ comment.body }}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            {% if comment.replies.all %}
+                                                                {% include 'partials/comment_loop.html'  %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                            {% endif %}
+                                            <!-- /row -->
+                                    {% endfor %}
+
+                                    {% include "partials/pagination.html" with page_obj=comments paginator=paginator %}
+                                </div>
+                            </div>
+                        </section>
+
+                    </div>
+
+                    <aside class="col-md-4 col-sm-12 col-xs-12 pull-right">
+                        <div style="border-radius: 25px" class="statistics">
+                            <ul>
+                                <li>
+                                    <span> مدت دوره </span>
+                                    <i> {{ course.total_time}} </i>
+                                </li>
+                                <li>
+                                    <span> تعداد ویدیوها </span>
+                                    <i> {{ course.video.all.count }} </i>
+                                </li>
+                                <li>
+                                    <span> تعداد دانشجوها </span>
+                                    <i> {{ course.count_of_student }} نفر </i>
+                                </li>
+                            </ul>
+                            {% if request.user in course.student.all and course.price != 0 %}
+                                <a href="#">دانشجوی دوره هستید</a>
+                            {% else %}
+                                {% if course.total_price == 0 %}
+                                    <a href="#">رایگان</a>
+                                {% else %}
+                                    {% if course.discount %}
+                                        <a style="" href="{% url 'cart_add' course.id%}">شرکت در دوره : {{ course.total_price }} تومان</a>
+                                    {% else %}
+                                        <a href="{% url 'cart_add' course.id%}">شرکت در دوره : {{ course.price }}</a>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        </div>
+
+                        <article style="border-radius: 25px" class="teacher-info">
+                            <img src="{{ course.teacher.profile.image.url }}">
+                            <h2> مدرس : {{ course.teacher}} </h2>
+{#                            <p>#}
+{#                                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است استفاده از طراحان گرافیک است ...#}
+{#                            </p>#}
+                        </article>
+
+                        <article style="border-radius: 25px" class="term-info">
+                            <h2> اطلاعات این دوره </h2>
+                            <ul>
+                                <li>سطح دوره: {{ course.get_level }}</li>
+                                <li>وضعیت دوره: {{ course.finish}}</li>
+                                <li>طول دوره : {{ course.total_time }}</li>
+                                {% if course.price != 0 %}
+                                    <li>قیمت : {{ course.price}} تومان</li>
+                                {% else %}
+                                    <li>قیمت : رایگان</li>
+                                {% endif %}
+                                <li>تاریخ ثبت این دوره : {{ course.created|to_jalali:'%Y/%m/%d'}}</li>
+                                <li>آخرین بروزرسانی دوره : {{ course.updated|to_jalali:'%Y/%m/%d'}}</li>
+                            </ul>
+                        </article>
+
+                        <div style="border-radius: 25px" class="share-layer">
+                            <span> به اشتراک گذاری </span>
+                            <a href=""><i class="zmdi zmdi-facebook"></i></a>
+                            <a href=""><i class="zmdi zmdi-google-old"></i></a>
+                            <a href=""><i class="zmdi zmdi-twitter"></i></a>
+                            <a href=""><i class="zmdi zmdi-linkedin"></i></a>
+                        </div>
+                        {% if course.tags.all %}
+                            <div style="border-radius: 25px" class="tags-layer">
+                                {% for tag in course.tags.all %}
+                                    <a href="{% url 'tag_courses' tag.slug %}">{{ tag.name }} </a>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                    </aside>
+
+                </div>
+
+            </section>
+        </div>
+{% endblock %}
+

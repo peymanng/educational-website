@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    archive
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .radio-container{
+            padding: 10px;
+        }
+        .radio-title{
+            padding-bottom: 10px;
+            border-bottom: 1px solid;
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+        <div class="container">
+            <section class="term-categories">
+
+                <div class="top-bar">
+                    <header>
+                    {% if searched %}
+                        <h1> دوره های <span> {{ searched}} </span></h1>
+                    {% endif %}
+                         <span> {{ count }} دوره </span>
+                    </header>
+
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 pull-right">
+                                        <form action="{% url 'search' %}" method="GET">
+                                            <div class="input">
+                                                <input type="text" name="search-word" placeholder="موضوع مورد نظر ...">
+                                                <button><i class="zmdi zmdi-search"></i></button>
+                                            </div>
+                                       </form>
+
+                                    </div>
+                                </div>
+
+{#                            <button id="form-submit" style="margin-top: 15px;width: 100%;" type="submit" class="btn btn-success">اعمال فیلتر</button>#}
+                </div>
+
+                <div class="row justify-content-center">
+
+                    <form action="{% url 'course_filter' %}" method="GET">
+                        <aside style="margin-bottom: 50px;" class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
+                            <section class="aside-section">
+                                <h2 style="padding-top: 15px;padding-right: 10px" class="h4 radio-title text-info">
+                                    نوع دوره
+                                </h2>
+                                <div class="radio-container" style="display: flex;flex-direction: column">
+                                    <div>
+                                        <input id="available-filter-1" name="kind" value="all" checked="" type="radio">
+                                        <label for="available-filter-1"> همه </label>
+                                    </div>
+                                    <div>
+                                        <input id="available-filter-2" name="kind" value="notfree" type="radio">
+                                        <label for="available-filter-2"> خریدنی </label>
+                                    </div>
+                                    <div>
+                                        <input id="available-filter-3" name="kind" value="free" type="radio">
+                                        <label for="available-filter-3"> رایگان </label>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="aside-section">
+                                <div style="padding: 10px;text-align: center;">
+                                    <select class="form-control" name="order" id="">
+                                        <option selected disabled> مرتب سازی </option>
+                                        <option value="price"> قیمت </option>
+                                        <option value="length"> مدت زمان دوره </option>
+                                        <option> تاریخ انتشار </option>
+                                    </select>
+                                </div>
+                            </section>
+                            <button style="width: 100%" type="submit" class="btn btn-primary">اعمال فیلتر</button>
+                        </aside>
+                    </form>
+                    <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
+
+                        <section class="terms-items">
+                            <div class="row">
+                                {% for course in courses %}
+                                    <!-- col -->
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 term-col">
+                                        <article>
+                                            <a href="{% url 'course_detail' course.slug %}" class="img-layer"><img alt="image" src="{{ course.image.url }}"></a>
+                                            <h2><a href="{% url 'course_detail' course.slug %}"> {{ course.title }} </a></h2>
+                                            {% if course.total_price == 0 %}
+                                                <span style="font-weight: bold;color: green"> رایگان </span>
+                                            {% else %}
+                                                {% if course.discount %}
+                                                    <span style="color: green;font-weight: bold;"><del style="color: red;">{{ course.price }} </del> {{ course.total_price }} تومان</span>
+                                                {% else %}
+                                                    <span>{{ course.total_price }} تومان</span>
+                                                {% endif %}
+                                            {% endif %}
+                                            <i>{{ course.total_time}}</i>
+                                        </article>
+                                    </div>
+                                    <!-- /col -->
+                                {% endfor %}
+
+                                {% if not courses %}
+                                    <h2 style="margin: 22px 0;font-weight: bold" class="text-center text-danger h2">دوره ای یافت نشد!</h2>
+                                {% endif %}
+
+
+                            </div>
+                            {% include "partials/pagination.html" with page_obj=courses paginator=paginator %}
+                        </section>
+
+                    </div>
+                </div>
+            </section>
+        </div>
+{% endblock %}
+
+{% block scripts %}
+        <script src="{% static 'noUiSlider/nouislider.min.js' %}"></script>
+
+        <script type="text/javascript">
+            $(function(){
+
+                var slider = document.getElementById('priceFilter');
+                noUiSlider.create(slider, {
+                    start: [ 20000,100000 ],
+                    step: 5000,
+                    connect: true,
+                    direction: 'rtl',
+                     range: {
+                         'min': 20000,
+                         'max': 100000
+                     }
+                });
+
+                var marginMin = document.getElementById('min-text'),
+                marginMax = document.getElementById('max-text');
+
+                slider.noUiSlider.on('update', function ( values, handle ) {
+                    var xvalue = Math.round(values[handle]);
+                    if ( handle ) {
+                      marginMax.innerHTML = xvalue;
+                    } else {
+                      marginMin.innerHTML = xvalue;
+                    }
+                    //console.log(values[handle]);
+                });
+
+                slider.noUiSlider.on('change', function ( values, handle ) {
+                    var xvalue = Math.round(values[handle]);
+                    if ( handle ) {
+                      // setGetParameter('max_price', xvalue);
+                      $('#max-value').val(xvalue);
+                    } else {
+                      // setGetParameter('min_price', xvalue);
+                      $('#min-value').val(xvalue);
+                    }
+                });
+
+
+                slider.noUiSlider.on('slide', function(values, handle){
+
+                    console.log(values[0]);
+                    console.log(values[1]);
+
+                    var xvalue = Math.round(values[handle]);
+                    //updateSliderRange( Math.round(values[0]), Math.round(values[1]) );
+                });
+
+
+                function updateSliderRange( min, max ) {
+                    slider.noUiSlider.updateOptions({
+                      range: {
+                        'min': min,
+                        'max': max
+                      }
+                    });
+                }
+            });
+        </script>
+{% endblock %}
+

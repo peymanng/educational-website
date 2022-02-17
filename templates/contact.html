@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}
+    تماس با ما
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .box{
+            padding: 15px;
+            border-radius: 5px;
+            color: #fff;
+            width: 300px;
+            height: 150px;
+            font-size: 110px;
+            text-align: center;
+        }
+        .box-container{
+            justify-content: center;
+            align-items: center;
+        }
+        .box a{
+            color: #fff;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div style="padding-top: 120px;padding-bottom: 150px" class="container">
+        <div class="box-container" style="display: flex;flex-direction: column">
+            <div style="margin-bottom: 20px" class="bg-primary box">
+                <a href="https://instagram.com/_pymn___"><i class="zmdi zmdi-instagram"></i></a>
+            </div>
+            <div class="bg-primary box">
+                <a href="https://github.com/peymanng/"><i class="zmdi zmdi-github"></i></a>
+            </div>
+            <div style="margin-top: 20px" class="bg-primary box">
+                <a href="https://wa.me/+989330646650"><i class="zmdi zmdi-whatsapp"></i></a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
