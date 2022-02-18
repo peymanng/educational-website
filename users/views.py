@@ -40,8 +40,8 @@ def signup_view(request):
             return redirect('signup')
         else:
             if User.objects.filter(email=email).exists():
-                messages.error(request, 'ایمیل از فبل ثبت شده است.')
-                return redirect('register')
+                messages.error(request, 'ایمیل از قبل ثبت شده است.')
+                return redirect('signup')
             else:
                 user = User.objects.create_user(username=username , email=email)
                 user.set_password(password)
