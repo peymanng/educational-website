@@ -54,7 +54,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'zarinpal',
     'captcha',
-    'jalali_date'
+    'jalali_date',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 
