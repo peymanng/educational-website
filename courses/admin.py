@@ -1,6 +1,8 @@
 from django.contrib import admin
 from .models import Course , Video , Category , Comment
 from jalali_date import datetime2jalali
+from django.http import HttpResponse
+from django.core import serializers
 from jalali_date.admin import ModelAdminJalaliMixin, StackedInlineJalaliMixin
 
 # ----------actions-----------
@@ -13,6 +15,12 @@ def inactive_items(modeladmin , request , queryset):
 def active_items(modeladmin , request , queryset):
     result = queryset.update(active=True)
     modeladmin.message_user(request , f'{result} مورد فعال گردید.')
+
+@admin.action(description='گرفتن خروجی json')
+def export_as_json(modeladmin , request , queryset):
+    response = HttpResponse(content_type = 'application/json')
+    serializers.serialize('json',queryset,stream=response)
+    return response
 
 #----------inlines-------------
 class VideoCourseInlines(StackedInlineJalaliMixin,admin.StackedInline):
@@ -27,7 +35,7 @@ class CourseAdmin(admin.ModelAdmin):
     search_fields = ['title','categories__title','teacher__username','teacher__first_name','teacher__last_name']
     list_editable = ['active' , 'is_finish']
     raw_id_fields = ['teacher']
-    actions = [inactive_items,active_items]
+    actions = [inactive_items,active_items , export_as_json]
     inlines = [VideoCourseInlines]
 
 

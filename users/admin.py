@@ -5,7 +5,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 from jalali_date import datetime2jalali
-
+from courses.admin import export_as_json
 from .models import User,Profile
 
 
@@ -47,6 +47,7 @@ class UserAdmin(BaseUserAdmin):
     readonly_fields = ('register_date',)
     list_display = ('email', 'username','get_register_date_jalali' , 'phone_number', 'is_admin')
     list_filter = ('is_admin',)
+    actions = (export_as_json,)
     fieldsets = (
         (None, {'fields': ('email', 'username','password')}),
         ('Personal info', {'fields': ('phone_number', 'first_name','last_name')}),
