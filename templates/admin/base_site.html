@@ -1,0 +1,10 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block extrastyle %}
+  <link rel='stylesheet' href='{% static 'css/admin.css' %}'>
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">کدیاد</a></h1>
+{% endblock %}
