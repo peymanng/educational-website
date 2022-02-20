@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block styles %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         .captcha input{
             margin-top: 5px;
@@ -189,10 +190,9 @@
 
                         <div style="border-radius: 25px" class="share-layer">
                             <span> به اشتراک گذاری </span>
-                            <a href=""><i class="zmdi zmdi-facebook"></i></a>
-                            <a href=""><i class="zmdi zmdi-google-old"></i></a>
-                            <a href=""><i class="zmdi zmdi-twitter"></i></a>
-                            <a href=""><i class="zmdi zmdi-linkedin"></i></a>
+                            {% load social_share%}
+                            {% post_to_whatsapp course.slug "<i class='zmdi zmdi-whatsapp'></i>" %}
+                            {% post_to_facebook course.slug "<i class='zmdi zmdi-facebook'></i>" %}
                         </div>
                         {% if course.tags.all %}
                             <div style="border-radius: 25px" class="tags-layer">

@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'captcha',
     'jalali_date',
     'django_cleanup.apps.CleanupConfig',
+    'django_social_share',
 ]
 
 
