@@ -46,3 +46,7 @@
 body{
     font-family: "B Yekan" , "Vazir" ;
 }
+
+.paginator .this-page{
+    background: var(--breadcrumbs-fg) ;
+}

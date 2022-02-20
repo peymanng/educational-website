@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import OrderItem , Order
 from jalali_date import datetime2jalali
 from jalali_date.admin import ModelAdminJalaliMixin, StackedInlineJalaliMixin
-from courses.admin import export_as_json
+from courses.admin import export_as_json ,ExportCsvMixin
 
 
 class OrderItemInline(StackedInlineJalaliMixin,admin.StackedInline):
@@ -10,10 +10,10 @@ class OrderItemInline(StackedInlineJalaliMixin,admin.StackedInline):
     raw_id_fields = ['course']
 
 @admin.register(Order)
-class OrderAdmin(ModelAdminJalaliMixin,admin.ModelAdmin):
+class OrderAdmin(ModelAdminJalaliMixin,admin.ModelAdmin , ExportCsvMixin):
     list_display = ['id','user','email','paid','get_created_jalali','get_update_jalali']
     list_filter = ('paid','created','update')
-    actions = (export_as_json,)
+    actions = (export_as_json,'export_as_csv')
     inlines = [OrderItemInline]
 
     def get_created_jalali(self, obj):

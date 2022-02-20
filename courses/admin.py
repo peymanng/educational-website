@@ -1,3 +1,5 @@
+import csv
+from django.http import HttpResponse
 from django.contrib import admin
 from .models import Course , Video , Category , Comment
 from jalali_date import datetime2jalali
@@ -6,6 +8,27 @@ from django.core import serializers
 from jalali_date.admin import ModelAdminJalaliMixin, StackedInlineJalaliMixin
 
 # ----------actions-----------
+class ExportCsvMixin:
+    def export_as_csv(self, request, queryset):
+
+        meta = self.model._meta
+        field_names = [field.name for field in meta.fields if field.name not in ('description','image')]
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename={}.csv'.format(meta)
+        response.write(u'\ufeff'.encode('utf8'))
+        writer = csv.writer(response,delimiter=',', lineterminator='\n', quoting=csv.QUOTE_ALL, dialect='excel')
+
+        writer.writerow(field_names)
+        for obj in queryset:
+            row = writer.writerow([getattr(obj, field) for field in field_names])
+
+        return response
+
+    export_as_csv.short_description = "خروجی اکسل"
+
+
+
 @admin.action(description="غیر فعال کردن دوره ها")
 def inactive_items(modeladmin , request , queryset):
     result = queryset.update(active=False)
@@ -28,16 +51,15 @@ class VideoCourseInlines(StackedInlineJalaliMixin,admin.StackedInline):
     extra = 0
 
 @admin.register(Course)
-class CourseAdmin(admin.ModelAdmin):
+class CourseAdmin(admin.ModelAdmin,ExportCsvMixin):
     list_display = ['title','show_image_in_admin','get_teacher_name','price' ,'discount' ,'category_to_str' ,'tag_to_str','total_time' , 'is_finish','level' , 'active']
     prepopulated_fields = {'slug':('title',)}
     list_filter = ['active','is_finish']
     search_fields = ['title','categories__title','teacher__username','teacher__first_name','teacher__last_name']
     list_editable = ['active' , 'is_finish']
     raw_id_fields = ['teacher']
-    actions = [inactive_items,active_items , export_as_json]
+    actions = [inactive_items,active_items , export_as_json,"export_as_csv"]
     inlines = [VideoCourseInlines]
-
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
