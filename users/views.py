@@ -36,24 +36,28 @@ def signup_view(request):
     if request.user.is_authenticated:
         return redirect('/')
     if request.method == 'POST':
-        email = request.POST.get('email')
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        form = CaptchaForm(request.POST)
+        if form.is_valid():
+            email = request.POST.get('email')
+            username = request.POST.get('username')
+            password = request.POST.get('password')
 
-        if User.objects.filter(username = username).exists():
-            messages.error(request,'این نام کاربری ثبت شده است.')
-            return redirect('signup')
-        else:
-            if User.objects.filter(email=email).exists():
-                messages.error(request, 'ایمیل از قبل ثبت شده است.')
+            if User.objects.filter(username = username).exists():
+                messages.error(request,'این نام کاربری ثبت شده است.')
                 return redirect('signup')
             else:
-                user = User.objects.create_user(username=username , email=email)
-                user.set_password(password)
-                user.save()
-                return redirect('login')
-
-    return render(request, 'register.html')
+                if User.objects.filter(email=email).exists():
+                    messages.error(request, 'ایمیل از قبل ثبت شده است.')
+                    return redirect('signup')
+                else:
+                    user = User.objects.create_user(username=username , email=email)
+                    user.set_password(password)
+                    user.save()
+                    return redirect('login')
+        else:
+            return render(request,'register.html' , {"form": form})
+    form = CaptchaForm()
+    return render(request, 'register.html', {"form": form})
 
 def logout_view(request):
     logout(request)

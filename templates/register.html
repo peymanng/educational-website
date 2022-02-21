@@ -4,6 +4,17 @@
     register
 {% endblock %}
 
+{% block styles %}
+    <style>
+        img{
+            margin-bottom: 10px;
+        }
+        .invalid-feedback {
+            color: red;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
         <main class="client-page">
             <div class="container-content">
@@ -26,6 +37,11 @@
                         <div class="input-group">
                             <span class="input-group-addon" id="password"><i class="zmdi zmdi-lock"></i></span>
                             <input name="password" type="password" class="form-control" placeholder="رمز عبور " aria-describedby="password">
+                        </div>
+
+                        <div class="input-group">
+                            {% load crispy_forms_filters %}
+                            {{ form|crispy }}
                         </div>
 
                         <div class="link">
