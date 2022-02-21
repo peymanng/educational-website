@@ -1,6 +1,6 @@
 import csv
-from django.http import HttpResponse
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 from .models import Course , Video , Category , Comment
 from jalali_date import datetime2jalali
 from django.http import HttpResponse
@@ -60,6 +60,15 @@ class CourseAdmin(admin.ModelAdmin,ExportCsvMixin):
     raw_id_fields = ['teacher']
     actions = [inactive_items,active_items , export_as_json,"export_as_csv"]
     inlines = [VideoCourseInlines]
+    readonly_fields = ['course_image']
+    def course_image(self, obj):
+        return mark_safe('<img src="{url}" width="{width}" height={height} />'.format(
+            url = obj.image.url,
+            width=obj.image.width,
+            height=obj.image.height,
+            )
+    )
+    course_image.short_description = 'عکس دوره'
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):

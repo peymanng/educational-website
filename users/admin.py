@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
+from django.utils.safestring import mark_safe
 from jalali_date import datetime2jalali
 from courses.admin import export_as_json , ExportCsvMixin
 from .models import User,Profile
@@ -69,6 +70,19 @@ class UserAdmin(BaseUserAdmin,ExportCsvMixin):
 
     get_register_date_jalali.short_description = 'تاریخ ثبت نام'
 
-admin.site.register(Profile)
+
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ['user','show_image_in_admin']
+    readonly_fields = ['profile_image']
+    def profile_image(self, obj):
+        return mark_safe('<img src="{url}" width="{width}" height={height} />'.format(
+            url = obj.image.url,
+            width=obj.image.width,
+            height=obj.image.height,
+            )
+    )
+    profile_image.short_description = 'عکس پروفایل'
+
+admin.site.register(Profile,ProfileAdmin)
 admin.site.register(User, UserAdmin)
 admin.site.unregister(Group)

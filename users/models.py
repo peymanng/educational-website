@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.html import format_html
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
@@ -82,12 +83,22 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name = 'کاربر')
     image = models.ImageField(default='default.jpg', upload_to='profile_pics', verbose_name = 'عکس')
 
-    def __str__(self):
-        return f'{self.user.username} Profile'
-
     class Meta:
         verbose_name='پروفایل'
         verbose_name_plural = 'پروفایل ها'
+
+    def __str__(self):
+        return f'{self.user.username} Profile'
+
+    def show_image_in_admin(self):
+        if self.image:
+            return format_html(
+                "<img style='border-radius: 5px;' width=100px height=75px  src='{}' >".format(self.image.url))
+        else:
+            return ''
+
+    show_image_in_admin.allow_tags = True
+    show_image_in_admin.short_description = 'تصویر'
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
