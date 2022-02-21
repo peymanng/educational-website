@@ -4,9 +4,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
+from courses.forms import CaptchaForm
 from .forms import UpdateUserForm
 from .models import Profile
-from courses.models import Course
 
 User = get_user_model()
 
@@ -14,18 +14,23 @@ def login_view(request):
     if request.user.is_authenticated:
         return  redirect('/')
     if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        remember_me = request.POST.get('remember-me')
-        user = authenticate(request,username=username ,password=password)
-        if user is not None:
-            login(request , user)
-            if not remember_me:
-                request.session.set_expiry(0)
-            return redirect('profile')
-        messages.error(request , 'نام کاربری یا رمز عبور نادرست است.')
-        return render(request , 'login.html')
-    return render(request , 'login.html')
+        form = CaptchaForm(request.POST)
+        if form.is_valid():
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            remember_me = request.POST.get('remember-me')
+            user = authenticate(request,username=username ,password=password)
+            if user is not None:
+                login(request , user)
+                if not remember_me:
+                    request.session.set_expiry(0)
+                return redirect('profile')
+            messages.error(request , 'نام کاربری یا رمز عبور نادرست است.')
+            return render(request , 'login.html',{'form':form})
+        else:
+            return render(request, 'login.html', {'form': form})
+    form = CaptchaForm()
+    return render(request , 'login.html',{'form':form})
 
 def signup_view(request):
     if request.user.is_authenticated:

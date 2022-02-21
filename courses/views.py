@@ -2,12 +2,11 @@ from django.shortcuts import render
 from .models import Course , Comment
 from django.core.paginator import Paginator , PageNotAnInteger , EmptyPage
 from django.contrib import messages
-from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from taggit.models import Tag
 from .forms import CaptchaForm
-from django.http import HttpResponse
-# Create your views here.
+
+
 def course_list(request):
     all_courses = Course.objects.all()
     count = len(all_courses)
