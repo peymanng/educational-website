@@ -25,6 +25,8 @@ def course_list(request):
 def course_detail(request,slug):
     print(request.POST)
     course = get_object_or_404(Course,slug=slug)
+    if request.user.ip_address not in course.visits.all():
+        course.visits.add(request.user.ip_address)
     if request.method == 'POST':
         print('POST in course detail')
         form = CaptchaForm(request.POST)

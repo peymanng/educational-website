@@ -42,6 +42,17 @@ class CommentManager(models.Manager):
     def get_active_comments(self):
         return self.get_queryset().filter(active=True)
 
+class IP(models.Model):
+    ip = models.GenericIPAddressField()
+
+    class Meta:
+        verbose_name='آی پی'
+        verbose_name_plural = "آی پی ها"
+
+    def __str__(self):
+        return self.ip
+
+
 class Category(models.Model):
     title = models.CharField(max_length=50 , verbose_name="عنوان")
     slug = models.SlugField(unique=True, allow_unicode=True)
@@ -82,6 +93,7 @@ class Course(models.Model):
     student = models.ManyToManyField(User, blank=True, related_name='student_courses', verbose_name='دانشجو')
     is_finish = models.BooleanField(default=False, verbose_name='آیا دوره تمام شده؟')
     tags = TaggableManager(verbose_name='برچسب ها')
+    visits = models.ManyToManyField(IP, blank=True, related_name='visits')
 
     objects = CourseManager()
 
@@ -123,6 +135,10 @@ class Course(models.Model):
         else:
             return 0
 
+    def get_visits(self):
+        return self.visits.count()
+
+    get_visits.short_description = "تعداد بازدید"
 
     def category_to_str(self):
         return " - ".join([category.title for category in self.categories.get_active_category()])

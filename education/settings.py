@@ -74,6 +74,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'axes.middleware.AxesMiddleware',
+    'education.middlewares.SaveIPAddressMiddleware',
 ]
 
 ROOT_URLCONF = 'education.urls'

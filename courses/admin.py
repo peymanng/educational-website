@@ -1,7 +1,7 @@
 import csv
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from .models import Course , Video , Category , Comment
+from .models import Course , Video , Category , Comment , IP
 from jalali_date import datetime2jalali
 from django.http import HttpResponse
 from django.core import serializers
@@ -28,7 +28,6 @@ class ExportCsvMixin:
     export_as_csv.short_description = "خروجی اکسل"
 
 
-
 @admin.action(description="غیر فعال کردن دوره ها")
 def inactive_items(modeladmin , request , queryset):
     result = queryset.update(active=False)
@@ -52,7 +51,7 @@ class VideoCourseInlines(StackedInlineJalaliMixin,admin.StackedInline):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin,ExportCsvMixin):
-    list_display = ['title','show_image_in_admin','get_teacher_name','price' ,'discount' ,'category_to_str' ,'tag_to_str','total_time' , 'is_finish','level' , 'active']
+    list_display = ['title','show_image_in_admin','get_teacher_name','price' ,'get_visits','discount' ,'category_to_str' ,'tag_to_str','total_time' , 'is_finish','level' , 'active']
     prepopulated_fields = {'slug':('title',)}
     list_filter = ['active','is_finish']
     search_fields = ['title','categories__title','teacher__username','teacher__first_name','teacher__last_name']
@@ -106,3 +105,5 @@ class CommentAdmin(admin.ModelAdmin):
         return datetime2jalali(obj.created).strftime('%Y/%m/%d _ %H:%M:%S')
 
     get_created_jalali.short_description = 'تاریخ ایجاد'
+
+admin.site.register(IP)

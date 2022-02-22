@@ -181,8 +181,9 @@
                                 {% if course.price != 0 %}
                                     <li>قیمت : {{ course.price}} تومان</li>
                                 {% else %}
-                                    <li>قیمت : رایگان</li>
+                                    <li>قیمت : <span style="background: #0dc105" class="badge">رایگان</span></li>
                                 {% endif %}
+                                <li>تعداد بازدید : <span style="background: #0c30dd" class="badge">{{ course.get_visits }}</span></li>
                                 <li>تاریخ ثبت این دوره : {{ course.created|to_jalali:'%Y/%m/%d'}}</li>
                                 <li>آخرین بروزرسانی دوره : {{ course.updated|to_jalali:'%Y/%m/%d'}}</li>
                             </ul>
