@@ -26,10 +26,9 @@ class Post(models.Model):
     description = models.CharField(max_length=100)
     body = RichTextUploadingField()
     pub_date = models.DateTimeField(auto_now=False, auto_now_add=True)
-    likes = models.ManyToManyField(User, related_name='blogpost_like', blank=True)
     image = models.ImageField(upload_to='posts/')
     tags = TaggableManager()
-    visits = models.ManyToManyField(IP, blank=True, related_name='visits')
+    visits = models.ManyToManyField(IP, blank=True, related_name='views')
 
     class Meta:
         verbose_name = "مقاله"

@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'courses.apps.CoursesConfig',
     'cart.apps.CartConfig',
     'orders.apps.OrdersConfig',
+    'blog.apps.BlogConfig',
     'ckeditor',
     'ckeditor_uploader',
     'taggit',
