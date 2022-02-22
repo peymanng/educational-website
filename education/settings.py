@@ -44,6 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.discord',
     'users.apps.UsersConfig',
     'courses.apps.CoursesConfig',
     'cart.apps.CartConfig',
@@ -60,6 +66,11 @@ INSTALLED_APPS = [
     'axes'
 ]
 
+
+SITE_ID = 2
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 CART_SESSION_ID = 'cart'
 
@@ -116,6 +127,7 @@ DATABASES = {
 AUTHENTICATION_BACKENDS = [
     'axes.backends.AxesBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
 ]
 
 # Password validation

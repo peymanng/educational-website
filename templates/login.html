@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block styles %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/brands.min.css" integrity="sha512-bSncow0ApIhONbz+pNI52n0trz5fMWbgteHsonaPk42JbunIeM9ee+zTYAUP1eLPky5wP0XZ7MSLAPxKkwnlzw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         img{
             margin-bottom: 10px;
@@ -40,9 +41,15 @@
                             {% load crispy_forms_tags %}
                             {{ form|crispy}}
                         </div>
-
-                        <div class="remember-me">
+  <div class="remember-me">
                             <label><input type="checkbox" name="remember-me">  مرا بخاطر بسپار </label>
+                        </div>
+
+                        <div style="width: 100%">
+                            {% load socialaccount %}
+                            <a class="btn btn-primary" href="{% provider_login_url 'google' %}"><i class="zmdi zmdi-google"></i> ادامه با گوگل</a>
+                            <a class="btn btn-primary" href="{% provider_login_url 'github' %}"><i class="zmdi zmdi-github"></i> ادامه با گیت هاب</a>
+                            <a class="btn btn-primary" href="{% provider_login_url 'discord' %}"><i class="fa-brands fa-discord"></i> ادامه با دیسکورد</a>
                         </div>
 
                         <div class="link">

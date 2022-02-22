@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block styles %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/brands.min.css" integrity="sha512-bSncow0ApIhONbz+pNI52n0trz5fMWbgteHsonaPk42JbunIeM9ee+zTYAUP1eLPky5wP0XZ7MSLAPxKkwnlzw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         img{
             margin-bottom: 10px;
@@ -48,6 +49,12 @@
                             <a href="{% url 'login' %}"> <i class="zmdi zmdi-account"></i> ورود به سایت </a>
                         </div>
                         <button type="submit" class="btn btn-primary"> عضویت در سایت </button>
+                        <div style="width: 100%;margin-top: 20px">
+                            {% load socialaccount %}
+                            <a class="btn btn-primary" href="{% provider_login_url 'google' %}"><i class="zmdi zmdi-google"></i> ادامه با گوگل</a>
+                            <a class="btn btn-primary" href="{% provider_login_url 'github' %}"><i class="zmdi zmdi-github"></i> ادامه با گیت هاب</a>
+                            <a class="btn btn-primary" href="{% provider_login_url 'discord' %}"><i class="fa-brands fa-discord"></i> ادامه با دیسکورد</a>
+                        </div>
                     </form>
                 </div>
 
