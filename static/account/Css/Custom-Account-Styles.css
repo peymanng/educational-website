@@ -1,6 +1,9 @@
-
+@import url('https://v1.fontapi.ir/css/Yekan');
+@import url('https://v1.fontapi.ir/css/Vazir');
 /* Login Page Styles*/
-
+*{
+    font-family: "B Yekan" , "Vazir";
+}
 #head_banner{
     text-align: center;
     padding-top: 2rem;
