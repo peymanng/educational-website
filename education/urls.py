@@ -10,6 +10,7 @@ urlpatterns = [
     path('account/', include('allauth.urls')),
     path('accounts/' , include('users.urls')),
     path('',views.home,name="home"),
+    path('blog/',include('blog.urls')),
     path('contact-us/',views.contact_us,name='contact-us'),
     path('courses/',include('courses.urls')),
     path('cart/',include('cart.urls')),

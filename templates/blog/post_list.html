@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}
+    بلاگ
+{% endblock %}
+
+{% block styles %}
+    <style>
+    .categories{
+        background: white;
+        padding: 10px;
+        width: 100%;
+        margin-bottom: 25px;
+    }
+        .card{
+        padding: 5px;
+        background: white;
+        height: 100%;
+        border-radius: 5px;
+        box-shadow: 0 0 30px #ccc;
+        }
+        .card-img-top{
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class='categories'>
+            <h4 class="h4" style="margin-bottom: 8px;">دسته بندی های بلاگ:</h4>
+            {% for categroy in blog_categories %}
+                <a style="margin-left: 15px" href="">{{ categroy.title }}</a>
+            {% endfor %}
+        </div>
+        <div class="row">
+            {% for post in posts %}
+                <div class="col col-lg-12 col-lg-3 col-md-4">
+                    <div class="card" style="margin-bottom: 20px">
+                        <img src="{{post.image.url}}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <span style="margin-bottom: 7px"><i style="margin-left: 5px" class="zmdi zmdi-account"></i>{{ post.author.username }}</span>
+                            <h5 class="card-title">{{ post.title}}</h5>
+                            <p class="card-text">{{ post.description|truncatewords:10 }}</p>
+                            <a href="{% url 'post_detail' post.slug %}" class="btn btn-primary">ادامه مطلب</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div style="text-align: center">
+            {% include "partials/pagination.html" with page_obj=posts paginator=paginator %}
+        </div>
+    </div>
+{% endblock %}

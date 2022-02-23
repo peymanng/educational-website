@@ -9,7 +9,7 @@
                                 {% if user.is_authenticated %}
                                     <li><a href="{% url 'profile' %}"> پروفایل </a></li>
                                 {% endif %}
-{#                                <li><a href=""> درباره ما </a> </li>#}
+                                <li><a href="{% url 'post_list' %}"> بلاگ </a> </li>
                                 <li><a href="{% url 'contact-us' %}"> تماس با ما </a></li>
                             </ul>
                         </div>

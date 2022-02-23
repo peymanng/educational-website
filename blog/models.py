@@ -8,7 +8,7 @@ User = get_user_model()
 
 class PostCategory(models.Model):
     title = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField()
+    slug = models.SlugField(allow_unicode=True)
     description = models.CharField(max_length=130, null=True)
 
     class Meta:
