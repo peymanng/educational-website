@@ -11,6 +11,24 @@
             border-bottom-right-radius: 5px;
             box-shadow: 0 0 30px #ccc;
         }
+        .share{
+            background: #fff;
+            padding: 15px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 0 30px #ccc;
+        }
+        .share a {
+            margin-right: 15px;
+            padding: 5px;
+            background: #337ab7;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            width: 30px;
+        }
     </style>
 {% endblock %}
 
@@ -19,18 +37,26 @@
         <div class="box" style="background: white;padding: 20px;">
             <h2 class="h2">{{ post.title }}</h2>
             <hr style="border-top: 1px solid #000;">
-            <img class="img-rounded" style="width: 100%;margin-bottom: 20px" src="{{ post.image.url }}" alt="...">
-            <div>
-                <span style="margin-left: 10px"><i style="margin-left: 5px" class="zmdi zmdi-account"></i>{{ post.author.username }}</span>
-                <span><i style="margin-left: 5px" class="zmdi zmdi-eye"></i>{{ post.get_visits }}</span>
+            <div style="margin-bottom: 10px;font-size: 15px">
+                <span style="margin-left: 10px ; font-weight: bold">نویسنده: {{ post.author.username }}</span>
+                <span class="badge" style="font-weight: bold;background: #173df4"><i style="margin-left: 5px" class="zmdi zmdi-eye"></i>{{ post.get_visits }}</span>
             </div>
+            <img class="img-rounded" style="width: 100%;margin-bottom: 20px" src="{{ post.image.url }}" alt="...">
             <div>
                 <p>{{ post.body|safe }}</p>
             </div>
             <ul class="list-group list-group-flush">
                 <p style="font-weight: bold">تگ ها:</p>
-                        <li class="list-group-item">{% for post_tag in post.tags.all %}<a style="margin-left: 10px;" class='m-2 btn btn-primary' href="#">{{post_tag.name}} </a>{% endfor %}</li>
+                        <li class="list-group-item">{% for post_tag in post.tags.all %}<a style="margin-left: 10px;" class='m-2 btn btn-primary' href="{% url 'posts_by_tag' post_tag.slug %}">#{{post_tag.name}} </a>{% endfor %}</li>
               </ul>
         </div>
+           <div style="margin-top: 15px; border-radius: 5px" class="share">
+                    <span> به اشتراک گذاری </span>
+                    {% load social_share%}
+               <div style="display: flex;align-items: center">
+                    {% post_to_whatsapp post.slug "<i class='zmdi zmdi-whatsapp'></i>" %}
+                    {% post_to_facebook post.slug "<i class='zmdi zmdi-facebook'></i>" %}
+               </div>
+           </div>
     </div>
 {% endblock %}

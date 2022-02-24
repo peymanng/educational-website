@@ -105,6 +105,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'courses.context_processors.all_categories',
                 'cart.context_processors.cart',
+                'blog.context_processors.blog_categories',
             ],
         },
     },
