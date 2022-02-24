@@ -26,6 +26,8 @@ def posts(request, tag_slug=None):
 
 def post(request,slug):
     post = get_object_or_404(Post , slug=slug)
+    if request.user.ip_address not in post.visits.all():
+        post.visits.add(request.user.ip_address)
     return render(request , 'blog/post_detail.html' , {"post" : post})
 
 def posts_by_category(request,slug):

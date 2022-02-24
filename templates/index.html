@@ -5,121 +5,172 @@
     home
 {% endblock %}
 
+{% block styles %}
+    <style>
+        .card{
+            padding: 5px;
+        }
+        .card-img-top{
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+    </style>
+{% endblock %}
+
 {% block header %}
     <div class="landing-layer">
-            <div class="container">
-                <nav>
-                    <div class="row">
-                        <div class="col-sm-6 col-xs-12">
-                            <ul>
-                                <li>
-                                    <a href="{% url 'cart_detail' %}"> سبد خرید شما </a>
-                                    {% if user.is_authenticated %}
-                                        <a href="{% url 'profile' %}"> پروفایل </a>
-                                    {% endif %}
-                                    <a href="{% url 'post_list' %}">بلاگ </a>
-                                    <a href="{% url 'contact-us' %}"> تماس با ما </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-sm-6 col-xs-12">
-                            <div class="clientarea">
-                                {% if user.is_authenticated  %}
-                                    <div class="loggein ">
-                                        <i class="zmdi zmdi-account"></i><a href="{% url 'profile' %}"> {{ user.username }}</a>
-                                        <i style="margin-right: 10px" class="zmdi zmdi-square-right"></i><a href="{% url 'logout' %}">خروج</a>
-                                    </div>
-                                {% else %}
-                                    <div class="signin">
-                                        <i class="zmdi zmdi-account"></i>
-                                        <a href="{% url 'login' %}"> ورود </a> /
-                                        <a href="{% url 'signup' %}"> عضویت </a>
-                                    </div>
+        <div class="container">
+            <nav>
+                <div class="row">
+                    <div class="col-sm-6 col-xs-12">
+                        <ul>
+                            <li>
+                                <a href="{% url 'cart_detail' %}"> سبد خرید شما </a>
+                                {% if user.is_authenticated %}
+                                    <a href="{% url 'profile' %}"> پروفایل </a>
                                 {% endif %}
-                            </div>
+                                <a href="{% url 'post_list' %}">بلاگ </a>
+                                <a href="{% url 'contact-us' %}"> تماس با ما </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="clientarea">
+                            {% if user.is_authenticated %}
+                                <div class="loggein ">
+                                    <i class="zmdi zmdi-account"></i><a
+                                        href="{% url 'profile' %}"> {{ user.username }}</a>
+                                    <i style="margin-right: 10px" class="zmdi zmdi-square-right"></i><a
+                                        href="{% url 'logout' %}">خروج</a>
+                                </div>
+                            {% else %}
+                                <div class="signin">
+                                    <i class="zmdi zmdi-account"></i>
+                                    <a href="{% url 'login' %}"> ورود </a> /
+                                    <a href="{% url 'signup' %}"> عضویت </a>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
-                </nav>
-                <header>
-                    <a href="" class="logo"><img class="landing-image" src="https://codeyad.com/assets/images/logo.png"></a>
-                    <h1> با اساتید مجرب و کارآزموده در کدیاد </h1>
-                    <h2> آموزش ببینید ، تجربه کسب کنید و بازار کار شوید </h2>
-                    <h3> با کمترین هزینه خودت یاد بگیر </h3>
-                </header>
-                <div class="search-form">
-                    <form action="{% url 'search' %}" method="get">
-                        <input type="text" name="search-word" placeholder="چی دوست داری یاد بگیری ؟">
-                        <button><i class="zmdi zmdi-search"></i></button>
-                    </form>
                 </div>
+            </nav>
+            <header>
+                <a href="" class="logo"><img class="landing-image" src="https://codeyad.com/assets/images/logo.png"></a>
+                <h1> با اساتید مجرب و کارآزموده در کدیاد </h1>
+                <h2> آموزش ببینید ، تجربه کسب کنید و بازار کار شوید </h2>
+                <h3> با کمترین هزینه خودت یاد بگیر </h3>
+            </header>
+            <div class="search-form">
+                <form action="{% url 'search' %}" method="get">
+                    <input type="text" name="search-word" placeholder="چی دوست داری یاد بگیری ؟">
+                    <button><i class="zmdi zmdi-search"></i></button>
+                </form>
             </div>
         </div>
+    </div>
 {% endblock %}
 
 {% block content %}
-        <!-- content -->
-        <main id="home-page">
-            <div class="container">
-                <section class="terms-items">
-                    <header>
-                        <h2> آخرین دوره های کدیاد </h2>
-                        <a href="{% url 'course_list' %}"> مشاهده همه دوره ها </a>
-                    </header>
-                    <div class="row">
-                        {% for course in latest_courses %}
-                            <!-- col -->
-                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
-                                <article>
-                                    <a href="{% url 'course_detail' course.slug%}" class="img-layer"><img alt="course_photo" src="{{ course.image.url }}"></a>
-                                    <h2><a href="{% url 'course_detail' course.slug%}"> {{ course.title}}</a></h2>
-                                    {% if course.total_price == 0 %}
-                                        <span style="font-weight: bold;color: green"> رایگان </span>
+    <!-- content -->
+    <main id="home-page">
+        <div class="container">
+            <section class="terms-items">
+                <header>
+                    <h2> آخرین دوره های کدیاد </h2>
+                    <a href="{% url 'course_list' %}"> مشاهده همه دوره ها </a>
+                </header>
+                <div class="row">
+                    {% for course in latest_courses %}
+                        <!-- col -->
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
+                            <article>
+                                <a href="{% url 'course_detail' course.slug %}" class="img-layer"><img
+                                        alt="course_photo" src="{{ course.image.url }}"></a>
+                                <h2><a href="{% url 'course_detail' course.slug %}"> {{ course.title }}</a></h2>
+                                {% if course.total_price == 0 %}
+                                    <span style="font-weight: bold;color: green"> رایگان </span>
+                                {% else %}
+                                    {% if course.discount %}
+                                        <span style="color: green;font-weight: bold;"><del
+                                                style="color: red;">{{ course.price }} </del> {{ course.total_price }} تومان</span>
                                     {% else %}
-                                        {% if course.discount %}
-                                            <span style="color: green;font-weight: bold;"><del style="color: red;">{{ course.price }} </del> {{ course.total_price }} تومان</span>
-                                        {% else %}
-                                             <span> {{ course.total_price }} تومان</span>
-                                        {% endif %}
+                                        <span> {{ course.total_price }} تومان</span>
                                     {% endif %}
-                                    <i>{{ course.total_time}}</i>
-                                </article>
-                            </div>    
-                            <!-- /col -->
-                        {% endfor %}
-                    </div>
-                </section>
+                                {% endif %}
+                                <i>{{ course.total_time }}</i>
+                            </article>
+                        </div>
+                        <!-- /col -->
+                    {% endfor %}
+                </div>
+            </section>
 
-                <hr>
+            <hr>
 
-                <section class="terms-items">
-                    <header>
-                        <h2> دوره های محبوب کدیاد </h2>
-                        <a href="{% url 'course_list' %}"> مشاهده همه دوره ها </a>
-                    </header>
-                    <div class="row">
-                        {% for course in popular_courses %}
-                            <!-- col -->
-                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
-                                <article>
-                                    <a href="{% url 'course_detail' course.slug %}" class="img-layer"><img alt="image" src="{{ course.image.url}}"></a>
-                                    <h2><a href="{% url 'course_detail' course.slug %}"> {{ course.title}} </a></h2>
-                                    {% if course.total_price == 0 %}
-                                        <span style="font-weight: bold;color: green"> رایگان </span>
+            <section class="terms-items">
+                <header>
+                    <h2> دوره های محبوب کدیاد </h2>
+                    <a href="{% url 'course_list' %}"> مشاهده همه دوره ها </a>
+                </header>
+                <div class="row">
+                    {% for course in popular_courses %}
+                        <!-- col -->
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
+                            <article>
+                                <a href="{% url 'course_detail' course.slug %}" class="img-layer"><img alt="image"
+                                                                                                       src="{{ course.image.url }}"></a>
+                                <h2><a href="{% url 'course_detail' course.slug %}"> {{ course.title }} </a></h2>
+                                {% if course.total_price == 0 %}
+                                    <span style="font-weight: bold;color: green"> رایگان </span>
+                                {% else %}
+                                    {% if course.discount %}
+                                        <span style="color: green;font-weight: bold;"><del
+                                                style="color: red;">{{ course.price }} </del> {{ course.total_price }} تومان</span>
                                     {% else %}
-                                        {% if course.discount %}
-                                            <span style="color: green;font-weight: bold;"><del style="color: red;">{{ course.price }} </del> {{ course.total_price }} تومان</span>
-                                        {% else %}
-                                             <span> {{ course.total_price }} تومان </span>
-                                        {% endif %}
+                                        <span> {{ course.total_price }} تومان </span>
                                     {% endif %}
-                                    <i>{{ course.total_time}}</i>
-                                </article>
-                            </div>
-                            <!-- /col -->
-                        {% endfor %}
-                    </div>
-                </section>
-            </div>
-        </main>
-        <!-- /content -->
+                                {% endif %}
+                                <i>{{ course.total_time }}</i>
+                            </article>
+                        </div>
+                        <!-- /col -->
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="terms-items">
+                <header>
+                    <h2> پربازدیدترین مقالات بلاگ </h2>
+                    <a href="{% url 'post_list' %}"> مشاهده همه مقالات </a>
+                </header>
+                <div class="row">
+                    {% for post in posts %}
+                        <!-- col -->
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
+                            <article>
+                                <div class="card" style="margin-bottom: 20px">
+                                    <img src="{{ post.image.url }}" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <div style="margin-bottom: 7px">
+                                            <span>نویسنده:{{ post.author.username }}</span>
+                                        </div>
+                                        <h5 class="card-title">{{ post.title }}</h5>
+                                        <p class="card-text">{{ post.description|truncatewords:10 }}</p>
+                                        <div style="display: flex;align-items: center">
+                                            <p class="zmdi zmdi-eye"></p>
+                                            <p style="margin-right: 5px;background: #324396" class="badge">{{ post.get_visits }} </p>
+                                        </div>
+                                        <a href="{% url 'post_detail' post.slug %}" class="btn btn-primary">ادامه
+                                            مطلب</a>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <!-- /col -->
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    </main>
+    <!-- /content -->
 {% endblock content %}
