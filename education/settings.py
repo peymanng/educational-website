@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'cart.apps.CartConfig',
     'orders.apps.OrdersConfig',
     'blog.apps.BlogConfig',
+    'questions.apps.QuestionsConfig',
     'ckeditor',
     'ckeditor_uploader',
     'taggit',

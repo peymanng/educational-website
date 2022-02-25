@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ question.title }}
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .question{
+            align-items: center;
+            padding: 20px;
+            background: white;
+            margin: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 15px #ccc;
+        }
+        .q-title{
+            border-right: 1px solid black;
+            padding: 15px;
+        }
+        form{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .form-container{
+            background: white;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        .answer-detail{
+            margin-left: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="question">
+    <div style="display: flex;align-items: center">
+        <div style="display: flex;align-items: center">
+            <img style="width: 100px;height: 100px" class="img-circle" src="{{ question.user.profile.image.url }}" alt="...">
+            <h4 style="margin-right: 5px;font-weight: bold;" class="h4">{{ question.user.username }}</h4>
+        </div>
+        <h2 style="margin-right: 20px" class="h2 q-title">{{ question.title }}</h2>
+    </div>
+        <hr>
+        <p>{{ question.body }}</p>
+    </div>
+
+        {% if question.answers.all %}
+            <h2 class="h2 text-center text-primary">پاسخ ها</h2>
+            {% for answer in question.answers.all %}
+                    <div>
+                        <div class="question" style="{% if answer.correct_answer %}background:#72ffc4;{% endif %}display:flex;">
+                            <div class="answer-detail" style="display: flex;align-items: center">
+                                <img style="width: 100px;height: 100px;" class="img-circle" src="{{ answer.user.profile.image.url }}" alt="...">
+                                <h4 style="font-weight: bold;margin-right: 10px" class="h4">{{ answer.user.username }}</h4>
+                            </div>
+                            <p style="padding: 20px ; border-right: 1px solid black">{{ answer.body }}</p>
+                        </div>
+                    </div>
+            {% endfor %}
+        {% else %}
+            <div style="font-weight: bold; margin: 20px" class="alert alert-info text-center">پاسخی موجود نمی باشد</div>
+        {% endif %}
+
+    {% if request.user.is_authenticated %}
+        <h2 class="h2 text-center text-primary">ارسال پاسخ</h2>
+        <div class="form-container" style="margin:20px;">
+            <form action="{% url 'question_detail' question.slug %}" method="post">
+                {% csrf_token %}
+                <label for="answer">پاسخ</label>
+                <textarea name="answer" class="form-control" style="width: 80%;height: 300px" id="answer"></textarea>
+                <button style="margin-top: 20px ; width: 50%" type="submit" class="btn btn-primary">ارسال پاسخ</button>
+            </form>
+        </div>
+    {% else %}
+        <div style="margin: 20px" class="alert alert-info text-center">جهت پاسخ دادن وارد شوید</div>
+    {% endif %}
+{% endblock %}

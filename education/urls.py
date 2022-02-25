@@ -18,4 +18,5 @@ urlpatterns = [
     path('zarinpal/',include('zarinpal.urls',namespace='zarinpal')),
     path('captcha/', include('captcha.urls')),
     path('search/',views.search ,name='search'),
+    path('questions/', include('questions.urls')),
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

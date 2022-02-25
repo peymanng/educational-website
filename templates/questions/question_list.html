@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}
+ پرسش و پاسخ
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .question{
+            align-items: center;
+            padding: 10px;
+            background: white;
+            margin: 20px;
+            width: 100%;
+            box-shadow: 0 0 15px #ccc;
+            border-radius: 5px;
+        }
+        .detail{
+            margin-left: 45px;
+        }
+        .courses{
+            background: #fff;
+            padding: 15px;
+        }
+        .courses a{
+            margin-right: 10px;
+            background: forestgreen;
+            font-size: 14px;
+            width: 120px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+        <div class="courses">
+            <h3 style="margin-top: 0" class="h3 text-primary">دسته بندی ها</h3>
+            {% for course in courses %}
+                <a class="badge" href="{% url 'course_questions'  course.slug  %}">{{ course.title }}</a>
+            {% endfor %}
+
+        </div>
+        <div>
+            <a class="h3 btn btn-primary" style="margin-right: 20px" href="{% url 'ask_question' %}">+پرسش سوال </a>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                {% for question in questions %}
+                    <div style="display: flex;{% if question.is_solved %}background:#72ffc4;{% endif %}" class="question">
+                        <div class="detail" style="display: flex;align-items: center">
+                            <img width="100px" height="100px" class="img-circle" src="{{ question.user.profile.image.url }}" alt="...">
+                            <h4 style="margin-right: 10px">{{ question.user.username }}</h4>
+                        </div>
+                        <div style="padding: 15px ; border-right: 1px solid black">
+                            <h4 class="h4">{{ question.title }}</h4>
+                            <a href="{% url 'course_questions' question.course.slug %}" class="badge" style="background: forestgreen">{{ question.course.title }}</a>
+                            <p>{{ question.body|truncatewords:30 }}</p>
+                        <a href="{% url 'question_detail' question.slug %}" class="btn btn-primary">مشاهده</a>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="text-center">
+                    {% include "partials/pagination.html" with page_obj=questions paginator=paginator %}
+            </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center" style="margin-top: 30px"><h4 class="h4 text-danger">آخرین پرسش ها</h4></div>
+                {% for question in latest_questions %}
+                    <div style="width: 90%;" class="question">
+                        <h4 class="h4">{{ question.title }}</h4>
+                        <p>{{ question.body|truncatewords:20 }}</p>
+                        <a href="{% url 'question_detail' question.slug %}" class="btn btn-primary">مشاهده</a>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+{% endblock %}

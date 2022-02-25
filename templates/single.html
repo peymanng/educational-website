@@ -20,6 +20,12 @@
         hr{
             margin: 0;
         }
+        .question{
+            background: white;
+            padding: 10px;
+            border-radius: 25px;
+            text-align: center;
+        }
     </style>
 {% endblock %}
 
@@ -202,6 +208,9 @@
                                 {% endfor %}
                             </div>
                         {% endif %}
+                        <div class="question">
+                            <a href="{% url 'course_questions' course.slug %}">پرسش و پاسخ</a>
+                        </div>
 
                     </aside>
 
