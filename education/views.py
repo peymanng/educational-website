@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.db.models import Q
+from django.db.models import Q,Count
 from django.core.paginator import Paginator ,EmptyPage , PageNotAnInteger
 from blog.models import Post
 from courses.models import Course
@@ -8,7 +8,7 @@ from courses.models import Course
 def home(request):
     latest_courses = Course.objects.get_publish_course()[:8]
     popular_courses = Course.objects.get_popular_course()[:8]
-    posts = Post.objects.all().order_by('-visits')[:8]
+    posts = Post.objects.annotate(count=Count('visits')).order_by('-count')[:8]
     context = {'latest_courses':latest_courses , 'popular_courses':popular_courses , 'posts':posts}
     return render(request,'index.html',context)
 
