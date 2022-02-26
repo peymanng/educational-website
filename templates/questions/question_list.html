@@ -44,24 +44,28 @@
         </div>
         <div class="row">
             <div class="col-md-8">
-                {% for question in questions %}
-                    <div style="display: flex;{% if question.is_solved %}background:#72ffc4;{% endif %}" class="question">
-                        <div class="detail" style="display: flex;align-items: center">
-                            <img width="100px" height="100px" class="img-circle" src="{{ question.user.profile.image.url }}" alt="...">
-                            <h4 style="margin-right: 10px">{{ question.user.username }}</h4>
-                        </div>
-                        <div style="padding: 15px ; border-right: 1px solid black">
-                            <h4 class="h4">{{ question.title }}</h4>
-                            <a href="{% url 'course_questions' question.course.slug %}" class="badge" style="background: forestgreen">{{ question.course.title }}</a>
-                            <p>{{ question.body|truncatewords:30 }}</p>
-                        <a href="{% url 'question_detail' question.slug %}" class="btn btn-primary">مشاهده</a>
-                        </div>
-                    </div>
-                {% endfor %}
-                <div class="text-center">
-                    {% include "partials/pagination.html" with page_obj=questions paginator=paginator %}
-            </div>
-            </div>
+            {% if questions %}
+                            {% for question in questions %}
+                                <div style="display: flex;{% if question.is_solved %}background:#72ffc4;{% endif %}" class="question">
+                                    <div class="detail" style="display: flex;align-items: center">
+                                        <img width="100px" height="100px" class="img-circle" src="{{ question.user.profile.image.url }}" alt="...">
+                                        <h4 style="margin-right: 10px">{{ question.user.username }}</h4>
+                                    </div>
+                                    <div style="padding: 15px ; border-right: 1px solid black">
+                                        <h4 class="h4">{{ question.title }}</h4>
+                                        <a href="{% url 'course_questions' question.course.slug %}" class="badge" style="background: forestgreen">{{ question.course.title }}</a>
+                                        <p>{{ question.body|truncatewords:30 }}</p>
+                                    <a href="{% url 'question_detail' question.slug %}" class="btn btn-primary">مشاهده</a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <div class="text-center">
+                                {% include "partials/pagination.html" with page_obj=questions paginator=paginator %}
+                                {% else %}
+                                <h2 style="width:100%;margin:10px;" class="alert alert-danger">هیچ سوالی موجود نیست</h2>
+                                {% endif %}
+                            </div>
+            
             <div class="col-md-4">
                 <div class="text-center" style="margin-top: 30px"><h4 class="h4 text-danger">آخرین پرسش ها</h4></div>
                 {% for question in latest_questions %}
@@ -72,7 +76,7 @@
                     </div>
                 {% endfor %}
             </div>
-
+        </div>
         </div>
 
 {% endblock %}
