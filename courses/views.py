@@ -9,7 +9,7 @@ from .forms import CaptchaForm
 
 def course_list(request):
     all_courses = Course.objects.all()
-    count = len(all_courses)
+    count = all_courses.count()
     page = request.GET.get('page', 1)
 
     paginator = Paginator(all_courses, 6)
@@ -59,7 +59,7 @@ def course_detail(request,slug):
 def category_courses(request,slug):
     category_name = str(slug).replace('-',' ')
     all_courses = Course.objects.get_course_by_category(category_name)
-    count = len(all_courses)
+    count = all_courses.count()
     page = request.GET.get('page', 1)
     paginator = Paginator(all_courses, 3)
     try:
@@ -74,7 +74,7 @@ def category_courses(request,slug):
 def tag_courses(request,slug):
     tag = get_object_or_404(Tag, slug=slug)
     all_courses = Course.objects.filter(tags__name__in=[tag])
-    count = len(all_courses)
+    count = all_courses.count()
     page = request.GET.get('page', 1)
     paginator = Paginator(all_courses, 3)
     try:
@@ -119,7 +119,7 @@ def course_filter(request):
     else:
         sorted_courses = filtered_courses.order_by('-created')
 
-    count = len(sorted_courses)
+    count = sorted_courses.count()
     page = request.GET.get('page', 1)
     paginator = Paginator(sorted_courses, 3)
     try:

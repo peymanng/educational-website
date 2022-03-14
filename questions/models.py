@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.urls import reverse
+
 from courses.models import Course
 
 User = get_user_model()
@@ -17,6 +19,9 @@ class Question(models.Model):
     class Meta:
         verbose_name = 'سوال'
         verbose_name_plural = 'سوالات'
+
+    def get_absolute_url(self):
+        return reverse('question_detail' , kwargs={'slug' : self.slug})
 
     def __str__(self):
         return self.title

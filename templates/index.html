@@ -84,9 +84,9 @@
                         <!-- col -->
                         <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
                             <article>
-                                <a href="{% url 'course_detail' course.slug %}" class="img-layer"><img
+                                <a href="{{ course.get_absolute_url }}" class="img-layer"><img
                                         alt="course_photo" src="{{ course.image.url }}"></a>
-                                <h2><a href="{% url 'course_detail' course.slug %}"> {{ course.title }}</a></h2>
+                                <h2><a href="{{ course.get_absolute_url }}"> {{ course.title }}</a></h2>
                                 {% if course.total_price == 0 %}
                                     <span style="font-weight: bold;color: green"> رایگان </span>
                                 {% else %}
@@ -117,9 +117,9 @@
                         <!-- col -->
                         <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
                             <article>
-                                <a href="{% url 'course_detail' course.slug %}" class="img-layer"><img alt="image"
+                                <a href="{{ course.get_absolute_url }}" class="img-layer"><img alt="image"
                                                                                                        src="{{ course.image.url }}"></a>
-                                <h2><a href="{% url 'course_detail' course.slug %}"> {{ course.title }} </a></h2>
+                                <h2><a href="{{ course.get_absolute_url }}"> {{ course.title }} </a></h2>
                                 {% if course.total_price == 0 %}
                                     <span style="font-weight: bold;color: green"> رایگان </span>
                                 {% else %}
@@ -160,7 +160,7 @@
                                             <p class="zmdi zmdi-eye"></p>
                                             <p style="margin-right: 5px;background: #324396" class="badge">{{ post.get_visits }} </p>
                                         </div>
-                                        <a href="{% url 'post_detail' post.slug %}" class="btn btn-primary">ادامه
+                                        <a href="{{ post.get_absolute_url }}" class="btn btn-primary">ادامه
                                             مطلب</a>
                                     </div>
                                 </div>

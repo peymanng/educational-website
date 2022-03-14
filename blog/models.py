@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.urls import reverse
 from taggit.managers import TaggableManager
 from courses.models import IP
 
@@ -17,6 +18,9 @@ class PostCategory(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolut_url(self):
+        return reverse('posts_by_category' , kwargs={'slug' : self.slug})
 
 class Post(models.Model):
     title = models.CharField(max_length=50,verbose_name="عنوان")
@@ -36,6 +40,9 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('post_detail' , kwargs={'slug' : self.slug})
 
     def get_categories(self):
         return ' , '.join([category.title for category in self.category.all()])

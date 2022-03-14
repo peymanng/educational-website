@@ -65,6 +65,9 @@ class Category(models.Model):
         verbose_name = 'دسته بندی'
         verbose_name_plural = 'دسته بندی ها'
 
+    def get_absolute_url(self):
+        return reverse('category_courses' , kwargs={'slug' : self.slug})
+
     def __str__(self):
         return self.title
 
@@ -117,7 +120,7 @@ class Course(models.Model):
             img.save(self.image.path)
 
     def get_absolute_url(self):
-        return reverse('course_detail', args=[str(self.slug)])
+        return reverse('course_detail',kwargs={'slug':self.slug})
 
     def total_price(self):
         if self.discount:
@@ -210,7 +213,7 @@ class Course(models.Model):
             return 'مقدماتی تا پیشرفته'
 
     def count_of_student(self):
-        count = len(self.student.all())
+        count = self.student.all().count()
         return count
 
     count_of_student.short_description = 'تعداد دانشجو ها'

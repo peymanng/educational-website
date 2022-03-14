@@ -26,7 +26,7 @@ def search(request):
     searched_courses = Course.objects.filter(Q(title__icontains=searched) | Q(description__icontains=searched) | Q(tags__name__icontains=searched) |
                                     Q(categories__title__icontains=searched)).distinct()
 
-    count = len(searched_courses)
+    count = searched_courses.count()
     page = request.GET.get('page', 1)
     paginator = Paginator(searched_courses, 3)
     try:

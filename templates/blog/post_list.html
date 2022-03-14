@@ -31,7 +31,7 @@
         <div class='categories'>
             <h4 class="h4" style="margin-bottom: 8px;">دسته بندی های بلاگ:</h4>
             {% for categroy in blog_categories %}
-                <a style="margin-left: 15px" href="{% url 'posts_by_category' categroy.slug %}">{{ categroy.title }}</a>
+                <a style="margin-left: 15px" href="{{ categroy.get_absolut_url }}">{{ categroy.title }}</a>
             {% endfor %}
         </div>
         {% if tag %}
@@ -49,7 +49,7 @@
                             </div>
                             <h5 class="card-title">{{ post.title}}</h5>
                             <p class="card-text">{{ post.description|truncatewords:10 }}</p>
-                            <a href="{% url 'post_detail' post.slug %}" class="btn btn-primary">ادامه مطلب</a>
+                            <a href="{{ post.get_absolute_url }}" class="btn btn-primary">ادامه مطلب</a>
                         </div>
                     </div>
                 </div>

@@ -89,8 +89,8 @@
                                     <!-- col -->
                                     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 term-col">
                                         <article>
-                                            <a href="{% url 'course_detail' course.slug %}" class="img-layer"><img alt="image" src="{{ course.image.url }}"></a>
-                                            <h2><a href="{% url 'course_detail' course.slug %}"> {{ course.title }} </a></h2>
+                                            <a href="{{ course.get_absolute_url }}" class="img-layer"><img alt="image" src="{{ course.image.url }}"></a>
+                                            <h2><a href="{{ course.get_absolute_url }}"> {{ course.title }} </a></h2>
                                             {% if course.total_price == 0 %}
                                                 <span style="font-weight: bold;color: green"> رایگان </span>
                                             {% else %}

@@ -6,11 +6,11 @@
                     <ul>
                         {% for category in all_categories %}
                             {% if category.parent == None %}
-                                <li><a href="{% url 'category_courses' category.slug %}"> {{ category.title}} </a>
+                                <li><a href="{{ category.get_absolute_url }}"> {{ category.title}} </a>
                                     {% if category.children.all %}
                                         <ul>
                                             {% for child in category.children.all %}
-                                                <li><a href="{% url 'category_courses' child.slug %}"> {{ child.title}} </a></li>
+                                                <li><a href="{{ child.get_absolute_url }}"> {{ child.title}} </a></li>
                                             {% endfor %}
                                         </ul>
                                     {% endif %}

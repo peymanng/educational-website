@@ -61,7 +61,7 @@
                                             <div style="display: flex;align-items: center;">
                                                 <img class="course-img" style="margin-left: 30px;border-radius: 10px;" src="{{ course.image.url }}" alt="image">
                                                 <div class="teacher" style="display: flex;justify-content: space-between;">
-                                                    <a style="font-weight: bold" href="{% url 'course_detail' course.slug %}">{{ course.title }}</a>
+                                                    <a style="font-weight: bold" href="{{ course.get_absolute_url }}">{{ course.title }}</a>
                                                     <span>مدرس: {{ course.teacher.username }} </span>
                                                 </div>
                                             </div>
