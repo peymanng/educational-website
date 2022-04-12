@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os.path
+from datetime import timedelta
 from pathlib import Path
 import dotenv # <- New
 
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -57,6 +59,7 @@ INSTALLED_APPS = [
     'orders.apps.OrdersConfig',
     'blog.apps.BlogConfig',
     'questions.apps.QuestionsConfig',
+    'api.apps.ApiConfig',
     'ckeditor',
     'ckeditor_uploader',
     'taggit',
@@ -66,7 +69,8 @@ INSTALLED_APPS = [
     'jalali_date',
     'django_cleanup.apps.CleanupConfig',
     'django_social_share',
-    'axes'
+    'axes',
+    'django_filters'
 ]
 
 
@@ -199,4 +203,13 @@ SOCIALACCOUNT_PROVIDERS = {
             'access_type': 'online',
         }
     }
+}
+
+# restframework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100
 }
