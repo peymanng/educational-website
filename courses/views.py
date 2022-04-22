@@ -23,16 +23,13 @@ def course_list(request):
     return render(request , 'archive.html' , {'courses' : courses , 'count': count , 'paginator':paginator})
 
 def course_detail(request,slug):
-    print(request.POST)
     course = get_object_or_404(Course,slug=slug)
     if request.user.ip_address not in course.visits.all():
         course.visits.add(request.user.ip_address)
     if request.method == 'POST':
-        print('POST in course detail')
         form = CaptchaForm(request.POST)
         body = request.POST.get('body')
         if form.is_valid():
-            print('Captcha Valid')
             user_comment = Comment.objects.create(course=course,user=request.user)
             user_comment.body = body
             user_comment.save()
@@ -51,8 +48,6 @@ def course_detail(request,slug):
     except EmptyPage:
         comments = paginator.page(paginator.num_pages)
 
-    print(all_comments)
-    print(comments)
 
     return render(request,'single.html' , {'course':course , 'form':form , 'comments' : comments , 'paginator':paginator })
 
@@ -94,17 +89,12 @@ def course_filter(request):
     sort = request.GET.get('order')
 
     if request.GET.get('page'):
-        print('omad inja dakhel page')
         kind = request.session.get('kind')
         sort = request.session.get('sort')
-        print(kind)
-        print(sort)
-        print('end page')
     else:
         request.session['kind'] = kind
         request.session['sort'] = sort
 
-    print(kind)
     if kind == 'free':
         filtered_courses = all_courses.filter(price=0)
     elif kind == 'notfree':

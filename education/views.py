@@ -17,7 +17,6 @@ def contact_us(request):
 
 def search(request):
     searched = request.GET.get('search-word')
-    print(request.GET.get('page'))
     if request.GET.get('page'):
         searched = request.session.get('search')
     else:
